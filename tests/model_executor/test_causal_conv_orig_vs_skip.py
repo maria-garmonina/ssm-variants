@@ -2,10 +2,8 @@ import pytest
 import torch
 import torch.nn.functional as F
 
-from vllm.model_executor.layers.mamba.ops import (
-  causal_conv1d_fn, causal_conv1d_update,
-  causal_conv1d_fn_skip_conv, causal_conv1d_update_skip_conv,
-)
+from vllm.model_executor.layers.mamba.ops.causal_conv1d import causal_conv1d_fn, causal_conv1d_update
+from vllm.model_executor.layers.mamba.ops.causal_conv1d_skip_conv import causal_conv1d_fn_skip_conv, causal_conv1d_update_skip_conv
 
 
 @pytest.mark.parametrize("batch,dim,seqlen,width", [
