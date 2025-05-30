@@ -308,6 +308,7 @@ if(VLLM_GPU_LANG STREQUAL "CUDA")
   # Keep building Marlin for 9.0 as there are some group sizes and shapes that
   # are not supported by Machete yet.
   # 9.0 for latest bf16 atomicAdd PTX
+  """
   cuda_archs_loose_intersection(MARLIN_ARCHS "8.0;9.0+PTX" "${CUDA_ARCHS}")
   if (MARLIN_ARCHS)
 
@@ -477,7 +478,8 @@ if(VLLM_GPU_LANG STREQUAL "CUDA")
 
   #
   # 2:4 Sparse Kernels
-
+"""
+"""
   # The 2:4 sparse kernels cutlass_scaled_sparse_mm and cutlass_compressor
   # require CUDA 12.2 or later (and only work on Hopper).
   cuda_archs_loose_intersection(SCALED_MM_ARCHS "9.0a;" "${CUDA_ARCHS}")
@@ -539,7 +541,9 @@ if(VLLM_GPU_LANG STREQUAL "CUDA")
     # clear MLA_ARCHS
     set(MLA_ARCHS)
   endif()
+"""
 
+"""
   # CUTLASS MoE kernels
 
   # The MoE kernel cutlass_moe_mm requires CUDA 12.3 or later (and only works
@@ -565,10 +569,12 @@ if(VLLM_GPU_LANG STREQUAL "CUDA")
                      "in CUDA target architectures")
     endif()
   endif()
+"""
 
   #
   # Machete kernels
 
+"""
   # The machete kernels only work on hopper and require CUDA 12.0 or later.
   # Only build Machete kernels if we are building for something compatible with sm90a
   cuda_archs_loose_intersection(MACHETE_ARCHS "9.0a" "${CUDA_ARCHS}")
@@ -637,6 +643,7 @@ if(VLLM_GPU_LANG STREQUAL "CUDA")
   endif()
 # if CUDA endif
 endif()
+"""
 
 message(STATUS "Enabling C extension.")
 define_gpu_extension_target(
@@ -661,6 +668,7 @@ target_compile_definitions(_C PRIVATE CUTLASS_ENABLE_DIRECT_CUDA_DRIVER_CALL=1)
 # _moe_C extension
 #
 
+"""
 set(VLLM_MOE_EXT_SRC
   "csrc/moe/torch_bindings.cpp"
   "csrc/moe/moe_align_sum_kernels.cu"
@@ -691,6 +699,7 @@ if(VLLM_GPU_LANG STREQUAL "CUDA")
     # For the Marlin MOE kernels we automatically generate sources for various
     # preselected input type pairs and schedules.
     # Generate sources:
+
     set(MOE_MARLIN_GEN_SCRIPT
       ${CMAKE_CURRENT_SOURCE_DIR}/csrc/moe/marlin_moe_wna16/generate_kernels.py)
     file(MD5 ${MOE_MARLIN_GEN_SCRIPT} MOE_MARLIN_GEN_SCRIPT_HASH)
@@ -737,6 +746,7 @@ if(VLLM_GPU_LANG STREQUAL "CUDA")
                    " in CUDA target architectures")
   endif()
 endif()
+"""
 
 if(VLLM_GPU_LANG STREQUAL "CUDA")
   set(MOE_PERMUTE_SRC
