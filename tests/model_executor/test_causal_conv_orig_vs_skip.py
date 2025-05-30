@@ -2,6 +2,11 @@ import pytest
 import torch
 import torch.nn.functional as F
 
+from typing import Optional
+
+from vllm import _custom_ops as ops
+from vllm.attention.backends.utils import PAD_SLOT_ID
+
 from vllm.model_executor.layers.mamba.ops.causal_conv1d import causal_conv1d_fn, causal_conv1d_update
 from vllm.model_executor.layers.mamba.ops.causal_conv1d_skip_conv import causal_conv1d_fn_skip_conv, causal_conv1d_update_skip_conv
 
